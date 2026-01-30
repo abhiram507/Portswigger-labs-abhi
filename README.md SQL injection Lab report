@@ -52,11 +52,14 @@ Host: <lab-host>.web-security-academy.net
 ...
 → Response: 200 OK, all products displayed (including unreleased ones).
 �
-Figure 1: Database error after injecting single quote ('), confirming lack of input sanitization.
-�
-Figure 2: Full product listing retrieved after payload ' OR 1=1 --, bypassing released=1 filter.
-�
-Figure 3: PortSwigger Academy confirmation of lab completion.
+![SQL Injection Error - Internal Server](./error-internal-server.jpg)
+*Figure 1: Database error after injecting single quote ('), confirming lack of input sanitization.*
+
+![All Products Displayed After Bypass](./success-all-products.jpg)
+*Figure 2: Full product listing retrieved after payload `' OR 1=1 --`, bypassing released=1 filter.*
+
+![Lab Solved Congratulations](./lab-solved-congrats.jpg)
+*Figure 3: PortSwigger Academy confirmation of lab completion.*
 Exploitation Explanation
 The single quote (') closed the string literal in the query:
 SELECT * FROM products WHERE category = 'Gifts' AND released = 1
@@ -67,14 +70,6 @@ Risk Assessment
 Likelihood: High (user-controlled parameter, no sanitization or parameterization).
 Impact: High to Critical — restricted data exposure; potential full DB dump in real apps.
 Affected Components: Backend database (likely MySQL or PostgreSQL per lab error patterns).
-![SQL Injection Error - Internal Server](./error-internal-server.jpg)
-*Figure 1: Database error after injecting single quote ('), confirming lack of input sanitization.*
-
-![All Products Displayed After Bypass](./success-all-products.jpg)
-*Figure 2: Full product listing retrieved after payload `' OR 1=1 --`, bypassing released=1 filter.*
-
-![Lab Solved Congratulations](./lab-solved-congrats.jpg)
-*Figure 3: PortSwigger Academy confirmation of lab completion.*
 Recommendations for Remediation
 Use prepared statements or parameterized queries (e.g., PDO in PHP, PreparedStatement in Java).
 Implement strict input validation and sanitization.
