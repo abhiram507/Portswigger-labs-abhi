@@ -52,7 +52,7 @@ Host: <lab-host>.web-security-academy.net
 ...
 → Response: 200 OK, all products displayed (including unreleased ones).
 �
-![SQL Injection Error - Internal Server](/error-internal-server.jpg)
+![SQL Injection Error-Internal Server](/error-internal-server.jpg)
 *Figure 1: Database error after injecting single quote ('), confirming lack of input sanitization.*
 
 ![All Products Displayed After Bypass](/success-all-products.jpg)
