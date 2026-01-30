@@ -62,15 +62,15 @@ The single quote (') closed the string literal in the query:
 SELECT * FROM products WHERE category = 'Gifts' AND released = 1
 Payload ' OR 1=1 -- transformed it to:
 SELECT * FROM products WHERE category = '' OR 1=1 -- AND released = 1
-→ OR 1=1 always true, -- comments out the rest. Classic boolean-based SQLi.
+→ OR 1=1 always true, -- comments out the rest. Classic boolean-based SQL injection.
 Risk Assessment
-Likelihood: High (user-controlled param, no sanitization/parameterization).
+Likelihood: High (user-controlled parameter, no sanitization or parameterization).
 Impact: High to Critical — restricted data exposure; potential full DB dump in real apps.
-Affected Components: Backend database (likely MySQL/PostgreSQL per lab error patterns).
+Affected Components: Backend database (likely MySQL or PostgreSQL per lab error patterns).
 Recommendations for Remediation
-Use prepared statements / parameterized queries (e.g., PDO in PHP, PreparedStatement in Java).
-Implement strict input validation/sanitization.
-Deploy WAF to block common SQLi patterns.
+Use prepared statements or parameterized queries (e.g., PDO in PHP, PreparedStatement in Java).
+Implement strict input validation and sanitization.
+Deploy a Web Application Firewall (WAF) to block common SQLi patterns.
 Regular code reviews, static/dynamic scanning (OWASP ZAP, sqlmap, Burp Scanner).
 Least privilege for DB accounts.
 Conclusion and Lessons Learned
@@ -78,7 +78,7 @@ This lab demonstrated manual SQLi exploitation using Burp Suite.
 Key Takeaways:
 Always test parameters for injection flaws.
 Simple payloads like ' OR 1=1 -- can bypass filters.
-Improved skills in recon, payload crafting, HTTP interception, and reporting.
+Improved skills in recon, payload crafting, HTTP interception, and professional reporting.
 References
 PortSwigger Web Security Academy: SQL Injection
 Specific Lab: SQL injection vulnerability in WHERE clause allowing retrieval of hidden data
