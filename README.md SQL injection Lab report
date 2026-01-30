@@ -3,7 +3,7 @@ SQL Injection Vulnerability Allowing Retrieval of Hidden Data
 
 **Report ID:** PS-LAB-001  
 **Author:** Abhiram (Abhi)  
-**Date:** January 24, 2026  
+**Date:** January 30, 2026  
 **Lab:** SQL injection vulnerability in WHERE clause allowing retrieval of hidden data (Apprentice Level)
 
 ## Executive Summary
@@ -20,7 +20,7 @@ SQL Injection Vulnerability Allowing Retrieval of Hidden Data
 - **Browser:** Google Chrome (Version 120.0 or similar)  
 - **Tools:** Burp Suite – for request interception, modification, and analysis  
 - **Operating System:** Windows 11  
-- **Test Date/Time:** January 24, 2026, approximately 04:17 PM IST
+- **Test Date/Time:** January 30, 2026, approximately 04:52 PM IST
 
 ## Methodology
 
