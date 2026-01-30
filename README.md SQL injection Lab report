@@ -52,10 +52,10 @@ Host: <lab-host>.web-security-academy.net
 ...
 → Response: 200 OK, all products displayed (including unreleased ones).
 �
-![SQL Injection Error-Internal Server](/error-internal-server.jpg)
+![SQL Injection Error-Internal Server](https://github.com/abhiram507/Portswigger-labs-abhi/blob/75027ae109845f5f3d767599afd032d59ede22b4/error-internal-server.jpg)
 *Figure 1: Database error after injecting single quote ('), confirming lack of input sanitization.*
 
-![All Products Displayed After Bypass](/success-all-products.jpg)
+![All Products Displayed After Bypass]()
 *Figure 2: Full product listing retrieved after payload `' OR 1=1 --`, bypassing released=1 filter.*
 
 ![Lab Solved Congratulations](/lab-solved-congrats.jpg)
